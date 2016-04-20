@@ -20,10 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     trem1 = createTrem(1, 250, 10, ui->labelTrem01->geometry(), ui->labelTrilho01->geometry());
-    trem2 = createTrem(2, 250, 10, ui->labelTrem02->geometry(), ui->labelTrilho02->geometry());
-    trem3 = createTrem(3, 250, 10, ui->labelTrem03->geometry(), ui->labelTrilho03->geometry());
-    trem4 = createTrem(4, 250, 10, ui->labelTrem04->geometry(), ui->labelTrilho04->geometry());
-    trem5 = createTrem(5, 250, 10, ui->labelTrem05->geometry(), ui->labelTrilho05->geometry());
+    trem2 = createTrem(2, 140, 10, ui->labelTrem02->geometry(), ui->labelTrilho02->geometry());
+    trem3 = createTrem(3, 180, 10, ui->labelTrem03->geometry(), ui->labelTrilho03->geometry());
+    trem4 = createTrem(4, 300, 10, ui->labelTrem04->geometry(), ui->labelTrilho04->geometry());
+    trem5 = createTrem(5, 80, 10, ui->labelTrem05->geometry(), ui->labelTrilho05->geometry());
     trem6 = createTrem(6, 250, 10, ui->labelTrem06->geometry(), ui->labelTrilho06->geometry());
 
     connect(trem1,SIGNAL(updateGUI(int,int,int)),SLOT(updateInterface(int,int,int)));

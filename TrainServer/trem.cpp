@@ -40,18 +40,14 @@ void Trem::run(){
             emit updateGUI(id,x,y);
             if (y+10 == top && x+10 < right){
                 x+=step;
-                std::cout << "a" << std::endl;
             }else if (x+10 == right && y+10 < bottom){
                 y+=step;
-                std::cout << "b" << std::endl;
             }else if (x+10 > left && y+10 == bottom){
                 x-=step;
-                std::cout << "c" << std::endl;
             }else if (x+10 == left && y+10 > top){
                 y-=step;
-                std::cout << "d" << std::endl;
             }else{
-                std::cout << x <<" - " << y<< std::endl;
+                std::cout << x <<" Error " << y<< std::endl;
             }
         }
         this_thread::sleep_for(chrono::milliseconds(velocidade));
