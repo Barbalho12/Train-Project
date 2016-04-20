@@ -31,7 +31,7 @@ border: 3px dashed black</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTrilho02">
+   <widget class="QLabel" name="labelTrilho03">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -48,7 +48,7 @@ border: 3px dashed black</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTrilho03">
+   <widget class="QLabel" name="labelTrilho02">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -70,7 +70,7 @@ border: 3px dashed black</string>
      <rect>
       <x>90</x>
       <y>120</y>
-      <width>281</width>
+      <width>280</width>
       <height>100</height>
      </rect>
     </property>
@@ -82,12 +82,12 @@ border: 3px dashed black</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTrilho05">
+   <widget class="QLabel" name="labelTrilho06">
     <property name="geometry">
      <rect>
       <x>230</x>
       <y>220</y>
-      <width>211</width>
+      <width>210</width>
       <height>100</height>
      </rect>
     </property>
@@ -99,12 +99,12 @@ border: 3px dashed black</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTrilho06">
+   <widget class="QLabel" name="labelTrilho05">
     <property name="geometry">
      <rect>
-      <x>19</x>
+      <x>20</x>
       <y>220</y>
-      <width>211</width>
+      <width>210</width>
       <height>100</height>
      </rect>
     </property>
@@ -167,8 +167,8 @@ border: 3px dashed black</string>
    <widget class="QLabel" name="labelTrem04">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>160</y>
+      <x>80</x>
+      <y>140</y>
       <width>20</width>
       <height>20</height>
      </rect>
@@ -180,11 +180,11 @@ border: 3px dashed black</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTrem05">
+   <widget class="QLabel" name="labelTrem06">
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>270</y>
+      <y>230</y>
       <width>20</width>
       <height>20</height>
      </rect>
@@ -196,11 +196,11 @@ border: 3px dashed black</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTrem06">
+   <widget class="QLabel" name="labelTrem05">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
+      <y>230</y>
       <width>20</width>
       <height>20</height>
      </rect>

@@ -14,6 +14,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    Trem *createTrem(int id, int velocidade, int step, QRect qtrem, QRect qtrilho);
     ~MainWindow();
 
 public slots:

@@ -6,11 +6,10 @@
 #include <chrono>
 using namespace std;
 
-class Trem : public QObject
-{
+class Trem : public QObject{
     Q_OBJECT
 public:
-    Trem(int,int,int);
+    Trem(int id, int x,int y, int velocidade, int step, int top,int left,int right,int bottom);
     ~Trem();
     void start();
     void run();
@@ -26,6 +25,12 @@ private:
    int x;
    int y;
    int velocidade;
+   int step;
+   int top;
+   int left;
+   int right;
+   int bottom;
+
    bool enable;
 };
 
