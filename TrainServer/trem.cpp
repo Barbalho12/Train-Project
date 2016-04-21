@@ -1,7 +1,7 @@
 #include <iostream>
 #include "trem.h"
 
-Trem::Trem(int id, int x, int y, int velocidade ,int step, int top,int left,int right,int bottom){
+Trem::Trem(int id, int x, int y, int velocidade ,int step, bool clockwise, int top,int left,int right,int bottom){
     this->id = id;
     this->x = x;
     this->y = y;
@@ -11,6 +11,7 @@ Trem::Trem(int id, int x, int y, int velocidade ,int step, int top,int left,int 
     this->right = right;
     this->bottom = bottom;
     this->velocidade = velocidade;
+    this->clockwise = clockwise;
     enable = true;
 }
 
@@ -35,20 +36,34 @@ void Trem::start()
 
 void Trem::run(){
     while(true){
-        if (enable)
-        {
+        if (enable){
             emit updateGUI(id,x,y);
-            if (y+10 == top && x+10 < right){
-                x+=step;
-            }else if (x+10 == right && y+10 < bottom){
-                y+=step;
-            }else if (x+10 > left && y+10 == bottom){
-                x-=step;
-            }else if (x+10 == left && y+10 > top){
-                y-=step;
+            if (clockwise){
+                if (y+10 == top && x+10 < right){
+                    x+=step;
+                }else if (x+10 == right && y+10 < bottom){
+                    y+=step;
+                }else if (x+10 > left && y+10 == bottom){
+                    x-=step;
+                }else if (x+10 == left && y+10 > top){
+                    y-=step;
+                }else{
+                    std::cout << x <<" Error " << y<< std::endl;
+                }
             }else{
-                std::cout << x <<" Error " << y<< std::endl;
+                if (y+10 == top && x+10 > left){
+                    x-=step;
+                }else if (x+10 == right && y+10 > top){
+                    y-=step;
+                }else if (x+10 < right && y+10 == bottom){
+                    x+=step;
+                }else if (x+10 == left && y+10 < bottom){
+                    y+=step;
+                }else{
+                    std::cout << x <<" Error " << y<< std::endl;
+                }
             }
+
         }
         this_thread::sleep_for(chrono::milliseconds(velocidade));
     }

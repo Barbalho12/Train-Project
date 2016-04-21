@@ -4,12 +4,13 @@
 #include <QObject>
 #include <thread>
 #include <chrono>
+
 using namespace std;
 
 class Trem : public QObject{
     Q_OBJECT
 public:
-    Trem(int id, int x,int y, int velocidade, int step, int top,int left,int right,int bottom);
+    Trem(int id, int x,int y, int velocidade, int step, bool clockwise, int top,int left,int right,int bottom);
     ~Trem();
     void start();
     void run();
@@ -26,6 +27,7 @@ private:
    int y;
    int velocidade;
    int step;
+   bool clockwise;
    int top;
    int left;
    int right;
