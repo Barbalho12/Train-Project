@@ -4,6 +4,16 @@
 #include <QMainWindow>
 #include "trem.h"
 
+#define PORTNUM 4325
+#define IP_SERV "10.5.30.75"
+
+struct Mensagem {
+    public:
+        int trainID;
+        float speed;
+        bool travado;
+};
+
 namespace Ui {
 class MainWindow;
 }
@@ -19,6 +29,8 @@ public:
 
 public slots:
     void updateInterface(int, int, int);
+    void socketHandler(int socketDescriptor, Mensagem mensagem);
+    void server();
 
 private:
     Ui::MainWindow *ui;

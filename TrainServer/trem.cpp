@@ -63,7 +63,6 @@ void Trem::run(){
                     std::cout << x <<" Error " << y<< std::endl;
                 }
             }
-
         }
         this_thread::sleep_for(chrono::milliseconds(velocidade));
     }
