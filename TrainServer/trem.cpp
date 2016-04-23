@@ -60,7 +60,7 @@ void Trem::run(){
                 }else if (x+10 == left && y+10 < bottom){
                     y+=step;
                 }else{
-                    std::cout << x <<" Error " << y<< std::endl;
+                    std::cout << x <<" Error " << y << " - " << top << "," << left << ","<< right << ","<< bottom << ","<< std::endl;
                 }
             }
         }

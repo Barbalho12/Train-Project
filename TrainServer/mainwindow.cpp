@@ -15,6 +15,7 @@
 #define MAXMSG 1024
 #define MAXNAME 100
 
+
 void MainWindow::socketHandler(int socketDescriptor, Mensagem mensagem) {
     int byteslidos;
 
@@ -28,6 +29,9 @@ void MainWindow::socketHandler(int socketDescriptor, Mensagem mensagem) {
     //printf("Servidor vai ficar esperando uma mensagem\n");
     byteslidos = recv(socketDescriptor,&mensagem,sizeof(mensagem),0);
 
+    this->mensagem = mensagem;
+    updateTrains();
+
     if (byteslidos == -1) {
         printf("Falha ao executar recv()");
         exit(EXIT_FAILURE);
@@ -37,10 +41,7 @@ void MainWindow::socketHandler(int socketDescriptor, Mensagem mensagem) {
         exit(EXIT_SUCCESS);
     }
 
-    if (mensagem.trainID == -1) {
-        //
-        trem1->setVelocidade(0);
-    }
+
 
     printf("Servidor recebeu a seguinte msg do cliente [%s:%d]: %s \n", mensagem.trainID, mensagem.speed);
 
@@ -108,8 +109,11 @@ void MainWindow::server() {
         printf("Servidor: recebeu conexão de %s\n", inet_ntoa(enderecoCliente.sin_addr));
 
         // Disparar a thread
-        std::thread t(socketHandler, conexaoClienteId, mensagem);
-        t.detach();
+        threadServer = std::thread(&MainWindow::socketHandler,this, conexaoClienteId, mensagem);
+        //threadServer =  std::thread t(socketHandler, conexaoClienteId, mensagem);
+
+        threadServer.detach();
+
 
         //
         sleep(1);
@@ -128,6 +132,14 @@ Trem *MainWindow::createTrem(int id, int velocidade, int step, bool clockwise, Q
     return trem;
 }
 
+void MainWindow::updateTrains(){
+    trem1->setVelocidade(mensagem.speed);
+    if (mensagem.trainID == -1) {
+        //
+        trem1->setVelocidade(0);
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
@@ -138,7 +150,7 @@ MainWindow::MainWindow(QWidget *parent) :
     trem2 = createTrem(2, 140, 10, false, ui->labelTrem02->geometry(), ui->labelTrilho02->geometry());
     trem3 = createTrem(3, 180, 10, true, ui->labelTrem03->geometry(), ui->labelTrilho03->geometry());
     trem4 = createTrem(4, 300, 10, false, ui->labelTrem04->geometry(), ui->labelTrilho04->geometry());
-    trem5 = createTrem(5, 80, 10, true, ui->labelTrem05->geometry(), ui->labelTrilho05->geometry());
+    trem5 = createTrem(5, 80,  10, true, ui->labelTrem05->geometry(), ui->labelTrilho05->geometry());
     trem6 = createTrem(6, 250, 10, true, ui->labelTrem06->geometry(), ui->labelTrilho06->geometry());
 
     connect(trem1, SIGNAL(updateGUI(int, int, int)), SLOT(updateInterface(int, int, int)));
@@ -153,10 +165,15 @@ MainWindow::MainWindow(QWidget *parent) :
     trem5->start();
     connect(trem6, SIGNAL(updateGUI(int, int, int)), SLOT(updateInterface(int, int, int)));
     trem6->start();
+
+    threadStartServer = std::thread(&MainWindow::server,this);
+
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+    //threadServer.detach();
+    threadStartServer.detach();
 }
 
 void MainWindow::updateInterface(int id, int x, int y) {

@@ -71,7 +71,7 @@ border: 3px dashed black</string>
       <x>90</x>
       <y>120</y>
       <width>280</width>
-      <height>101</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="styleSheet">

@@ -5,7 +5,7 @@
 #include "trem.h"
 
 #define PORTNUM 4325
-#define IP_SERV "10.5.30.75"
+#define IP_SERV "192.168.0.102"
 
 struct Mensagem {
     public:
@@ -40,6 +40,11 @@ private:
     Trem *trem4;
     Trem *trem5;
     Trem *trem6;
+    std::thread threadServer;
+    std::thread threadStartServer;
+    Mensagem mensagem;
+    void updateTrains();
+    //std::thread initServer;
 };
 
 #endif // MAINWINDOW_H

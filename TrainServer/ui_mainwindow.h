@@ -69,7 +69,7 @@ public:
         labelTrilho04->setObjectName(QStringLiteral("labelTrilho04"));
         labelTrilho04->setGeometry(QRect(90, 120, 280, 100));
         labelTrilho04->setStyleSheet(QLatin1String("background-color: red;\n"
-"border: 3px dashed black"));
+"border: 3px solid black"));
         labelTrilho06 = new QLabel(centralWidget);
         labelTrilho06->setObjectName(QStringLiteral("labelTrilho06"));
         labelTrilho06->setGeometry(QRect(230, 220, 210, 100));
