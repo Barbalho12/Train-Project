@@ -20,4 +20,4 @@ rm Makefile
 
 #Alterar o nome do executável 'AnalysisTime'
 printf "\n\rCopiando para a BBB (em /home/debian)..."
-sshpass -p 'temppwd' scp SensorClient debian@192.168.7.2:~
+sshpass -p 'temppwd' scp TrainClient debian@192.168.7.2:~

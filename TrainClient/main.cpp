@@ -36,6 +36,27 @@ struct Mensagem {
 
 Mensagem mensagem;
 
+/*---------------------------------------------------------------------------------*/
+
+void buttonsRead(){
+    BlackLib::BlackGPIO   botaoUp(BlackLib::GPIO_115,BlackLib::input, BlackLib::SecureMode);
+    BlackLib::BlackGPIO   botaoPlay(BlackLib::GPIO_113,BlackLib::input, BlackLib::SecureMode);
+    BlackLib::BlackGPIO   botaoDown(BlackLib::GPIO_117,BlackLib::input, BlackLib::SecureMode);
+
+    int up = botaoUp.getNumericValue();
+    int play = botaoPlay.getNumericValue();
+    int down = botaoDown.getNumericValue();
+
+//    switch (control) {
+//    case value:
+
+//        break;
+//    default:
+//        break;
+//    }
+    cout << "Valor do botão é: " << up << " - " <<  play << " - " << down << endl;
+}
+
 
 /*---------------------------------------------------------------------------------*/
 
@@ -50,8 +71,9 @@ int readAnalog(int number){
 }
 
 void pot(){
+    usleep(100);
     while(true){
-        usleep(100);
+        buttonsRead();
         int valor = readAnalog(1);
         mensagem.speed = valor;
         cout << "Potenciômetro: " << valor << endl;
@@ -103,6 +125,12 @@ void createSocket(Mensagem mensagem){
 
 /*---------------------------------------------------------------------------------*/
 
+
+
+
+
+/*---------------------------------------------------------------------------------*/
+
 void tsocket(){
     usleep(100000);
     while(true){
@@ -113,11 +141,11 @@ void tsocket(){
 }
 
 thread t2(pot);
-thread t4(tsocket);
+//thread t4(tsocket);
 
 void funcaoSignalHandler (int sig){
     t2.detach();
-    t4.detach();
+    //t4.detach();
     exit(EXIT_SUCCESS);
 }
 
@@ -126,6 +154,6 @@ int main(int argc, char *argv[]){
     signal(SIGINT, funcaoSignalHandler);
 
     t2.join();
-    t4.join();
+    //t4.join();
     return 0;
 }
