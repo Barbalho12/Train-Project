@@ -16,7 +16,7 @@
 
 
 #define PORTNUM 4325
-#define IP_SERV "192.168.0.102"
+#define IP_SERV "192.168.7.1"
 
 #define DELAY 2
 
@@ -38,25 +38,6 @@ Mensagem mensagem;
 
 /*---------------------------------------------------------------------------------*/
 
-void buttonsRead(){
-    BlackLib::BlackGPIO   botaoUp(BlackLib::GPIO_115,BlackLib::input, BlackLib::SecureMode);
-    BlackLib::BlackGPIO   botaoPlay(BlackLib::GPIO_113,BlackLib::input, BlackLib::SecureMode);
-    BlackLib::BlackGPIO   botaoDown(BlackLib::GPIO_117,BlackLib::input, BlackLib::SecureMode);
-
-    int up = botaoUp.getNumericValue();
-    int play = botaoPlay.getNumericValue();
-    int down = botaoDown.getNumericValue();
-
-//    switch (control) {
-//    case value:
-
-//        break;
-//    default:
-//        break;
-//    }
-    cout << "Valor do botão é: " << up << " - " <<  play << " - " << down << endl;
-}
-
 
 /*---------------------------------------------------------------------------------*/
 
@@ -70,90 +51,145 @@ int readAnalog(int number){
    return number;
 }
 
-void pot(){
-    usleep(100);
-    while(true){
-        buttonsRead();
-        int valor = readAnalog(1);
-        mensagem.speed = valor;
-        cout << "Potenciômetro: " << valor << endl;
-        sleep(DELAY);
-    }
+void readVelocity(){
+    int valor = readAnalog(1);
+    mensagem.speed = valor;
 }
 
 /*---------------------------------------------------------------------------------*/
+bool serverConnected = false;
 
-void createSocket(Mensagem mensagem){
+void disconnectedServer(){
+    if(serverConnected){
+        serverConnected = false;
+        printf("Server Disconnected\n");
+    }else{
+        printf("Server is not connected\n");
+    }
+
+}
+
+bool connectSocket(int *socketId){
     struct sockaddr_in endereco;
-    int socketId;
-
-    int bytesenviados;
+    //int socketId;
 
     memset(&endereco, 0, sizeof(endereco));
     endereco.sin_family = AF_INET;
     endereco.sin_port = htons(PORTNUM);
     endereco.sin_addr.s_addr = inet_addr(IP_SERV);
+    *socketId = socket(AF_INET, SOCK_STREAM, 0);
 
-    /*
-     * Criando o Socket
-     *
-     * PARAM1: AF_INET ou AF_INET6 (IPV4 ou IPV6)
-     * PARAM2: SOCK_STREAM ou SOCK_DGRAM
-     * PARAM3: protocolo (IP, UDP, TCP, etc). Valor 0 escolhe automaticamente
-    */
-    socketId = socket(AF_INET, SOCK_STREAM, 0);
-
-    //Verificar erros
-    if (socketId == -1){
-        printf("Falha ao executar socket()\n");
-        kill(getpid(), SIGINT);
+    if (*socketId == -1){
+        //printf("Falha ao executar socket()\n");
+        close(*socketId);
+        return false;
     }
 
-    if ( connect (socketId, (struct sockaddr *)&endereco, sizeof(struct sockaddr)) == -1 ){
-        printf("Falha ao executar connect()\n");
-        kill(getpid(), SIGINT);
+    if ( connect (*socketId, (struct sockaddr *)&endereco, sizeof(struct sockaddr)) == -1 ){
+        //printf("Falha ao executar connect()\n");
+        close(*socketId);
+        return false;
+    }
+    return true;
+}
+
+void connectedServer(){
+    int socketId;
+    if(connectSocket(&socketId) && !serverConnected){
+        //close(socketId);
+        serverConnected = true;
+        printf("Server Connected\n");
+    }else if(connectSocket(&socketId) && serverConnected){
+        printf("server is already connected\n");
+    }else{
+        printf("It was not possible to connect to the server\n");
     }
 
-    bytesenviados = send(socketId,&mensagem,sizeof(mensagem),0);
+}
 
-    if (bytesenviados == -1){
-        printf("Falha ao executar send()");
-        kill (getpid(), SIGINT);
+void sendMensage(Mensagem mensagem){
+    int socketId;
+    int bytesenviados;
+    if (connectSocket(&socketId) && serverConnected){
+        bytesenviados = send(socketId,&mensagem,sizeof(mensagem),0);
+        if (bytesenviados == -1){
+            printf("Falha ao executar send()");
+            //disconnectedServer();
+            return;
+        }
+    }else if(!serverConnected){
+        printf("Connect to the server before sending data\n");
     }
-    close(socketId);
+    //close(socketId);
 }
 
 /*---------------------------------------------------------------------------------*/
 
-
-
-
-
-/*---------------------------------------------------------------------------------*/
-
-void tsocket(){
-    usleep(100000);
+void teste(){
     while(true){
-        mensagem.speed = 1000;
-        createSocket(mensagem);
-        sleep(DELAY);
+        int n;
+        cin >> n;
+
+        if(n == 2){
+            readVelocity();
+            sendMensage(mensagem);
+            sleep(1);
+
+        } else if(n == 1){
+            disconnectedServer();
+            sleep(1);
+        } else if(n == 3){
+            connectedServer();
+            sleep(1);
+        }
     }
 }
 
-thread t2(pot);
-//thread t4(tsocket);
+void buttonsRead(){
+    BlackLib::BlackGPIO   botaoUp(BlackLib::GPIO_115,BlackLib::input, BlackLib::SecureMode);
+    BlackLib::BlackGPIO   botaoPlay(BlackLib::GPIO_113,BlackLib::input, BlackLib::SecureMode);
+    BlackLib::BlackGPIO   botaoDown(BlackLib::GPIO_117,BlackLib::input, BlackLib::SecureMode);
 
-void funcaoSignalHandler (int sig){
-    t2.detach();
-    //t4.detach();
-    exit(EXIT_SUCCESS);
+    int up,play,down;
+
+    while(true){
+        up = botaoUp.getNumericValue();
+        play = botaoPlay.getNumericValue();
+        down = botaoDown.getNumericValue();
+
+        if(play == 1){
+            readVelocity();
+            sendMensage(mensagem);
+            sleep(1);
+
+        } else if(up == 1){
+            disconnectedServer();
+            sleep(1);
+        } else if(down == 1){
+            connectedServer();
+            sleep(1);
+        }
+        //cout << "Valor do botão é: " << up << " - " <<  play << " - " << down << endl;
+    }
+
 }
+
+/*---------------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[]){
+    //signal(SIGINT, funcaoSignalHandler);
 
-    signal(SIGINT, funcaoSignalHandler);
+    thread t1(buttonsRead);
+    thread test(teste);
+    //connectSocket();
+    //disconnectedSocket();
+    //playAllTrains();
+    //pauseAllTrains();
+   // playTrain(int id);
+    //pauseTrain(int id);
+    //changeVelocityTrain(int id);
 
-    t2.join();
-    //t4.join();
+    t1.join();
+    test.join();
     return 0;
 }
