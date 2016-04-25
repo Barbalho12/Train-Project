@@ -36,6 +36,7 @@ void Trem::start()
 
 void Trem::run(){
     while(true){
+
         if (enable){
             emit updateGUI(id,x,y);
             if (clockwise){

@@ -11,12 +11,13 @@
 #include <csignal>
 #include <thread>
 #include <arpa/inet.h>  //inet_addr
+#include <vector>
 //#include <netinet/in.h> //htons
 //#include <sys/socket.h> //socket
 
 
 #define PORTNUM 4325
-#define IP_SERV "127.0.0.1"
+#define IP_SERV "192.168.7.1"
 
 #define DELAY 2
 
@@ -38,9 +39,6 @@ Mensagem mensagem;
 
 /*---------------------------------------------------------------------------------*/
 
-
-/*---------------------------------------------------------------------------------*/
-
 int readAnalog(int number){
    stringstream ss;
    ss << PATH_ADC << number << "_raw";
@@ -51,12 +49,12 @@ int readAnalog(int number){
    return number;
 }
 
-void readVelocity(){
-    int valor = readAnalog(1);
-    mensagem.speed = valor;
+int readVelocityOption(){
+    return readAnalog(1);
 }
 
-/*---------------------------------------------------------------------------------*/
+
+
 bool serverConnected = false;
 
 void disconnectedServer(){
@@ -125,23 +123,154 @@ void sendMensage(Mensagem mensagem){
 
 /*---------------------------------------------------------------------------------*/
 
+
+
+vector<string> options;
+vector<string> trains;
+void initOptionMenu(){
+    options.push_back("Connect to the server");
+    options.push_back("Close connect to the server");
+    options.push_back("Play all trains");
+    options.push_back("Off all trains");
+    options.push_back("Play a train");
+    options.push_back("Off a train");
+    options.push_back("Change the speed of a train");
+
+    //cout << options.size() << endl;
+
+    trains.push_back("Train 0");
+    trains.push_back("Train 1");
+    trains.push_back("Train 2");
+    trains.push_back("Train 3");
+    trains.push_back("Train 4");
+    trains.push_back("Train 5");
+}
+
+/*---------------------------------------------------------------------------------*/
+// Play all trains
+void playAllTrains() {
+    if(serverConnected){
+        mensagem.trainID = -1;
+        mensagem.travado = false;
+        sendMensage(mensagem);
+    }else{
+        cout << "Connect to the server before" << endl;
+    }
+
+}
+
+// Pause all trains
+void pauseAllTrains() {
+    if(serverConnected){
+        mensagem.trainID = -2;
+        mensagem.travado = true;
+        sendMensage(mensagem);
+    }else{
+        cout << "Connect to the server before" << endl;
+    }
+
+}
+
+// Play a train
+void playTrain(int id) {
+    if(serverConnected){
+        mensagem.trainID = id;
+        mensagem.travado = false;
+        mensagem.speed = -1;
+        sendMensage(mensagem);
+    }else{
+        cout << "Connect to the server before" << endl;
+    }
+
+}
+
+// Pause a train
+void pauseTrain(int id) {
+
+    if(serverConnected){
+        mensagem.trainID = id;
+        mensagem.travado = true;
+        mensagem.speed = -1;
+        sendMensage(mensagem);
+    }else{
+        cout << "Connect to the server before" << endl;
+    }
+
+}
+
+// Change speed
+void changeSpeedTrain(int id) {
+    if(serverConnected){
+        mensagem.trainID = id;
+        mensagem.speed = readVelocityOption();
+        sendMensage(mensagem);
+    }else{
+        cout << "Connect to the server before" << endl;
+    }
+
+}
+
+/*---------------------------------------------------------------------------------*/
+
+void menuExecute(int option, int id){
+
+    switch (option) {
+    case 0:
+        connectedServer();
+        break;
+    case 1:
+        disconnectedServer();
+        break;
+    case 2:
+        playAllTrains();
+        break;
+    case 3:
+        pauseAllTrains();
+        break;
+    case 4:
+        playTrain(id);
+        break;
+    case 5:
+        pauseTrain(id);
+        break;
+    case 6:
+        changeSpeedTrain(id);
+        break;
+    default:
+        break;
+    }
+
+}
+
+
 void teste(){
+
+    int optionActive = 0;
     while(true){
         int n;
         cin >> n;
 
         if(n == 2){
-            readVelocity();
-            sendMensage(mensagem);
-            sleep(1);
+            int id;
+            if(optionActive >= 4 && optionActive <= 6){
+                cout << "Digite o id: ";
+                cin >> id;
+            }
+            menuExecute(optionActive, id);
 
         } else if(n == 1){
-            disconnectedServer();
-            sleep(1);
+            ++optionActive;
+            if(optionActive == options.size()){ optionActive = 0;}
+            system("clear");
+            cout << optionActive << " - "<< options[optionActive] << endl;
         } else if(n == 3){
-            connectedServer();
-            sleep(1);
+            --optionActive;
+            if(optionActive == -1){ optionActive = options.size() -1;}
+            system("clear");
+            cout << optionActive << " - "<< options[optionActive] << endl;
         }
+
+        usleep(50000);
     }
 }
 
@@ -152,72 +281,50 @@ void buttonsRead(){
 
     int up,play,down;
 
+    int optionActive = 0;
+    cout << options[optionActive] << endl;
     while(true){
         up = botaoUp.getNumericValue();
         play = botaoPlay.getNumericValue();
         down = botaoDown.getNumericValue();
 
-        if(play == 1){
-            readVelocity();
-            sendMensage(mensagem);
-            sleep(1);
 
+        if(play == 1){
+            int id;
+            if(optionActive >= 4 && optionActive <= 6){
+                cout << "Digite o id: ";
+                cin >> id;
+            }
+            menuExecute(optionActive, id);
         } else if(up == 1){
-            disconnectedServer();
-            sleep(1);
+            system("clear");
+            optionActive++;
+            if(optionActive == options.size()) optionActive = 0;
+            cout << options[optionActive] << endl;
         } else if(down == 1){
-            connectedServer();
-            sleep(1);
+            system("clear");
+            optionActive--;
+            if(optionActive == -1) optionActive = options.size() -1;
+            cout << options[optionActive] << endl;
         }
+
+        sleep(1);
         //cout << "Valor do botão é: " << up << " - " <<  play << " - " << down << endl;
     }
 
 }
 
-// Play all trains
-void playAllTrains() {
-    mensagem.trainID = -2;
-}
 
-// Pause all trains
-void pauseAllTrains() {
-    mensagem.trainID = -1;
-}
-
-// Play a train
-void playTrain(int id) {
-    mensagem.trainID = id;
-    mensagem.travado = false;
-}
-
-// Pause a train
-void pauseTrain(int id) {
-    mensagem.trainID = id;
-    mensagem.travado = true;
-}
-
-// Change speed
-void changeSpeedTrain(int id) {
-    mensagem.trainID = id;
-    mensagem.speed = 10;
-}
 
 /*---------------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[]){
     //signal(SIGINT, funcaoSignalHandler);
-
+    initOptionMenu();
     thread t1(buttonsRead);
-    thread test(teste);
-    //connectSocket();
-    //disconnectedSocket();
-    //playAllTrains();
-    //pauseAllTrains();
-    //playTrain(int id);
-    //pauseTrain(int id);
-    //changeSpeedTrain(int id);
+    //thread test(teste);
 
     t1.join();
-    test.join();
+    //test.join();
     return 0;
 }
