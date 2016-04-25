@@ -24,7 +24,9 @@ void MainWindow::socketHandler(int socketDescriptor, Mensagem mensagem) {
         exit(EXIT_FAILURE);
     }
 
+
     byteslidos = recv(socketDescriptor,&mensagem,sizeof(mensagem),0);
+    cout << byteslidos << endl;
 
     this->mensagem = mensagem;
     updateTrains();
@@ -36,7 +38,7 @@ void MainWindow::socketHandler(int socketDescriptor, Mensagem mensagem) {
 
     else if (byteslidos == 0) {
         printf("Cliente finalizou a conexão\n");
-        exit(EXIT_SUCCESS);
+        //exit(EXIT_SUCCESS);
     }
 
     //printf("Servidor recebeu a seguinte msg do cliente [%s:%d]: %s \n", mensagem.trainID, mensagem.speed);
@@ -48,7 +50,7 @@ void MainWindow::server() {
 
     // Variáveis do servidor
     struct sockaddr_in endereco;
-    int socketId;
+    //int socketId;
 
     // Variáveis relacionadas com as conexões clientes
     struct sockaddr_in enderecoCliente;
@@ -86,6 +88,7 @@ void MainWindow::server() {
         // Servidor fica bloqueado esperando uma conexão do cliente
         conexaoClienteId = accept(socketId,(struct sockaddr *) &enderecoCliente, &tamanhoEnderecoCliente);
 
+
         printf("Servidor: recebeu conexão de %s\n", inet_ntoa(enderecoCliente.sin_addr));
 
         threadServer = std::thread(&MainWindow::socketHandler,this, conexaoClienteId, mensagem);
@@ -93,8 +96,9 @@ void MainWindow::server() {
         threadServer.detach();
 
 
-        //
+
         sleep(1);
+        //::close(conexaoClienteId);
     }
 }
 
@@ -111,58 +115,75 @@ Trem *MainWindow::createTrem(int id, int velocidade, int step, bool clockwise, Q
 }
 
 void MainWindow::updateTrains(){
-    std::cout << "Update " << mensagem.speed <<" - "<< mensagem.trainID << std::endl;
-    if(mensagem.trainID == -1 && !mensagem.travado){
-        trem1->setEnable(true);
-        trem2->setEnable(true);
-        trem3->setEnable(true);
-        trem4->setEnable(true);
-        trem5->setEnable(true);
-        trem6->setEnable(true);
-    }else if (mensagem.trainID == -2 && mensagem.travado){
-        trem1->setEnable(false);
-        trem2->setEnable(false);
-        trem3->setEnable(false);
-        trem4->setEnable(false);
-        trem5->setEnable(false);
-        trem6->setEnable(false);
-    }else{
-        switch (mensagem.trainID) {
-            case 1:
-                if(mensagem.speed != -1) trem1->setVelocidade(mensagem.speed);
-                else
-                if(mensagem.travado == false)  trem1->setEnable(true);
-            break;
-            case 2:
-                if(mensagem.speed != -1) trem2->setVelocidade(mensagem.speed);
-                else
-                trem2->setEnable(!mensagem.travado);
-            break;
-            case 3:
-                if(mensagem.speed != -1) trem3->setVelocidade(mensagem.speed);
-                else
-                trem3->setEnable(!mensagem.travado);
-            break;
-            case 4:
-                if(mensagem.speed != -1) trem4->setVelocidade(mensagem.speed);
-                else
-                trem4->setEnable(!mensagem.travado);
-            break;
-            case 5:
-                if(mensagem.speed != -1) trem5->setVelocidade(mensagem.speed);
-                else
-                trem5->setEnable(!mensagem.travado);
-            break;
-            case 6:
-                if(mensagem.speed != -1) trem6->setVelocidade(mensagem.speed);
-                else
-                trem6->setEnable(!mensagem.travado);
-            break;
-            default:
+    //std::cout << "Update " << mensagem.speed <<" - "<< mensagem.trainID << std::endl;
+//    if(mensagem.trainID == -1 && !mensagem.travado){
+//        trem1->setEnable(true);
+//        trem2->setEnable(true);
+//        trem3->setEnable(true);
+//        trem4->setEnable(true);
+//        trem5->setEnable(true);
+//        trem6->setEnable(true);
+//    }else if (mensagem.trainID == -2 && mensagem.travado){
+//        trem1->setEnable(false);
+//        trem2->setEnable(false);
+//        trem3->setEnable(false);
+//        trem4->setEnable(false);
+//        trem5->setEnable(false);
+//        trem6->setEnable(false);
+//    }else{
+    switch (mensagem.trainID) {
+        case -1:
+            if(mensagem.travado){
+                trem1->setEnable(false);
+                trem2->setEnable(false);
+                trem3->setEnable(false);
+                trem4->setEnable(false);
+                trem5->setEnable(false);
+                trem6->setEnable(false);
+            }else{
+                trem1->setEnable(true);
+                trem2->setEnable(true);
+                trem3->setEnable(true);
+                trem4->setEnable(true);
+                trem5->setEnable(true);
+                trem6->setEnable(true);
+            }
+        break;
+        case 1:
+            if(mensagem.speed != -1) trem1->setVelocidade(mensagem.speed);
+            else
+            if(mensagem.travado == false)  trem1->setEnable(true);
+        break;
+        case 2:
+            if(mensagem.speed != -1) trem2->setVelocidade(mensagem.speed);
+            else
+            trem2->setEnable(!mensagem.travado);
+        break;
+        case 3:
+            if(mensagem.speed != -1) trem3->setVelocidade(mensagem.speed);
+            else
+            trem3->setEnable(!mensagem.travado);
+        break;
+        case 4:
+            if(mensagem.speed != -1) trem4->setVelocidade(mensagem.speed);
+            else
+            trem4->setEnable(!mensagem.travado);
+        break;
+        case 5:
+            if(mensagem.speed != -1) trem5->setVelocidade(mensagem.speed);
+            else
+            trem5->setEnable(!mensagem.travado);
+        break;
+        case 6:
+            if(mensagem.speed != -1) trem6->setVelocidade(mensagem.speed);
+            else
+            trem6->setEnable(!mensagem.travado);
+        break;
+        default:
 
-            break;
-        }
+        break;
     }
+   // }
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -205,6 +226,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow() {
     delete ui;
+    ::close(socketId);
     //threadServer.detach();
     threadServer.join();
     threadStartServer.join();

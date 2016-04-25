@@ -17,7 +17,7 @@
 
 
 #define PORTNUM 4325
-#define IP_SERV "192.168.7.1"
+#define IP_SERV "127.0.0.1"
 
 #define DELAY 2
 
@@ -162,7 +162,7 @@ void playAllTrains() {
 // Pause all trains
 void pauseAllTrains() {
     if(serverConnected){
-        mensagem.trainID = -2;
+        mensagem.trainID = -1;
         mensagem.travado = true;
         sendMensage(mensagem);
     }else{
@@ -322,9 +322,9 @@ int main(int argc, char *argv[]){
     //signal(SIGINT, funcaoSignalHandler);
     initOptionMenu();
     thread t1(buttonsRead);
-    //thread test(teste);
+    thread test(teste);
 
     t1.join();
-    //test.join();
+    test.join();
     return 0;
 }

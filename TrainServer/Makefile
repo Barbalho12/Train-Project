@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = TrainServer1.0.0
-DISTDIR = /home/barbalho/BeagleBoneBlack/dev/Projects/TrainServer/.tmp/TrainServer1.0.0
+DISTDIR = /home/barbalho/BeagleBoneBlack/dev/Projects/Train-Project/TrainServer/.tmp/TrainServer1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/opt/Qt5.5.1/5.5/gcc_64 -Wl,-rpath,/opt/Qt5.5.1/5.5/gcc_64/lib
 LIBS          = $(SUBLIBS) -L/opt/Qt5.5.1/5.5/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
@@ -655,7 +655,7 @@ moc_mainwindow.cpp: /opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		trem.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
 		mainwindow.h
-	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore mainwindow.h -o moc_mainwindow.cpp
+	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/Train-Project/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore mainwindow.h -o moc_mainwindow.cpp
 
 moc_trem.cpp: /opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qobject.h \
@@ -711,7 +711,7 @@ moc_trem.cpp: /opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qisenum.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h \
 		trem.h
-	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore trem.h -o moc_trem.cpp
+	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/Train-Project/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore trem.h -o moc_trem.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -957,7 +957,47 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qicon.h \
 		trem.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMenuBar \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmenubar.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmenu.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QStatusBar \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qstatusbar.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QToolBar \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qtoolbar.h \
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 trem.o: trem.cpp trem.h \
