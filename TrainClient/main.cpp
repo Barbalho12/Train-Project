@@ -174,6 +174,34 @@ void buttonsRead(){
 
 }
 
+// Play all trains
+void playAllTrains() {
+    mensagem.trainID = -2;
+}
+
+// Pause all trains
+void pauseAllTrains() {
+    mensagem.trainID = -1;
+}
+
+// Play a train
+void playTrain(int id) {
+    mensagem.trainID = id;
+    mensagem.travado = false;
+}
+
+// Pause a train
+void pauseTrain(int id) {
+    mensagem.trainID = id;
+    mensagem.travado = true;
+}
+
+// Change speed
+void changeSpeedTrain(int id) {
+    mensagem.trainID = id;
+    mensagem.speed = 10;
+}
+
 /*---------------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[]){
@@ -185,9 +213,9 @@ int main(int argc, char *argv[]){
     //disconnectedSocket();
     //playAllTrains();
     //pauseAllTrains();
-   // playTrain(int id);
+    //playTrain(int id);
     //pauseTrain(int id);
-    //changeVelocityTrain(int id);
+    //changeSpeedTrain(int id);
 
     t1.join();
     test.join();
