@@ -5,8 +5,8 @@
 #include "trem.h"
 
 #define PORTNUM 4325
-//#define IP_SERV "192.168.7.1"
-#define IP_SERV "127.0.0.1"
+#define IP_SERV "192.168.7.1"
+//#define IP_SERV "127.0.0.1"
 
 struct Mensagem {
     public:

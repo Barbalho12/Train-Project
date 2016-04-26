@@ -12,19 +12,14 @@
 #include <thread>
 #include <arpa/inet.h>  //inet_addr
 #include <vector>
-//#include <netinet/in.h> //htons
-//#include <sys/socket.h> //socket
-
 
 #define PORTNUM 4325
-#define IP_SERV "127.0.0.1"
-
+//#define IP_SERV "127.0.0.1"
+#define IP_SERV "192.168.7.1"
 #define DELAY 2
-
 #define PATH_ADC "/sys/bus/iio/devices/iio:device0/in_voltage"
 
 using namespace std;
-
 
 struct Mensagem {
     public:
@@ -34,8 +29,11 @@ struct Mensagem {
 };
 
 Mensagem mensagem;
+bool serverConnected = false;
+vector<string> options;
 
-/*---------------------------------------------------------------------------------*/
+
+/*---------------------------------OPÇÕES DE LEITURA--------------------------------*/
 
 int readAnalog(int number){
    stringstream ss;
@@ -51,21 +49,91 @@ int readVelocityOption(){
     return readAnalog(1);
 }
 
-bool serverConnected = false;
+
+/*-----------------------------------OPÇÕES DE MENU---------------------------------*/
+
+void initOptionMenu(){
+    options.push_back("Connect to the server");
+    options.push_back("Close connect to the server");
+    options.push_back("Play all trains");
+    options.push_back("Off all trains");
+    options.push_back("Play a train");
+    options.push_back("Off a train");
+    options.push_back("Change the speed of a train");
+}
+
+void colorir(bool condition, int mode){
+    if(condition){
+        printf("%c[%d;%d;%dm", 0x1B, 1,31,mode);
+    }else{
+        printf("%c[%d;%d;%dm", 0x1B, 1,31,0);
+    }
+}
+
+void menuAnimation(int &optionActive){
+    system("clear");
+    colorir(true, 92);
+    cout << "=================Menu================[ "<< (40+(readAnalog(1)/10)) << " ]" << endl;
+    colorir(false, 92);
+    for (int i = 0; i <= 6; i++) {
+        //
+        if (i == optionActive) {
+            colorir(true, 40);
+            cout << "> ";
+        } else {
+            cout << "  ";
+        }
+
+        cout << options[i];
+        if (i == optionActive) {
+
+            cout << " <";
+            colorir(false, 40);
+        }
+        cout << endl;
+    }
+    colorir(true, 92);
+    cout << "======================================" << endl;
+    colorir(false, 92);
+}
+
+int menuGetId(){
+    int id;
+    colorir(true, 92);
+    cout << "===============OPTION=================" << endl;
+    colorir(false, 92);
+
+    cout << "Digite o id: ";
+    cin >> id;
+
+    colorir(true, 92);
+    cout << "======================================" << endl;
+    colorir(false, 92);
+
+    return id;
+}
+
+void printMensage(string message, int cor){
+    colorir(true, cor);
+    cout << message << endl;
+    colorir(false, cor);
+}
+
+
+
+/*---------------------------------OPÇÕES DE SERVIDOR--------------------------------*/
 
 void disconnectedServer(){
     if(serverConnected){
         serverConnected = false;
-        printf("Server Disconnected\n");
+        printMensage("Server Disconnected", 94);
     }else{
-        printf("Server is not connected\n");
+        printMensage("Server is not connected", 93);
     }
-
 }
 
 bool connectSocket(int *socketId){
     struct sockaddr_in endereco;
-    //int socketId;
 
     memset(&endereco, 0, sizeof(endereco));
     endereco.sin_family = AF_INET;
@@ -74,13 +142,11 @@ bool connectSocket(int *socketId){
     *socketId = socket(AF_INET, SOCK_STREAM, 0);
 
     if (*socketId == -1){
-        //printf("Falha ao executar socket()\n");
         close(*socketId);
         return false;
     }
 
     if ( connect (*socketId, (struct sockaddr *)&endereco, sizeof(struct sockaddr)) == -1 ){
-        //printf("Falha ao executar connect()\n");
         close(*socketId);
         return false;
     }
@@ -90,13 +156,12 @@ bool connectSocket(int *socketId){
 void connectedServer(){
     int socketId;
     if(connectSocket(&socketId) && !serverConnected){
-        //close(socketId);
         serverConnected = true;
-        printf("Server Connected\n");
+        printMensage("Server Connected", 94);
     }else if(connectSocket(&socketId) && serverConnected){
-        printf("server is already connected\n");
+        printMensage("server is already connected", 93);
     }else{
-        printf("It was not possible to connect to the server\n");
+        printMensage("It was not possible to connect to the server", 93);
     }
 
 }
@@ -107,40 +172,16 @@ void sendMensage(Mensagem mensagem){
     if (connectSocket(&socketId) && serverConnected){
         bytesenviados = send(socketId,&mensagem,sizeof(mensagem),0);
         if (bytesenviados == -1){
-            printf("Falha ao executar send()");
-            //disconnectedServer();
+            printMensage("Falha ao executar send()", 5);
             return;
         }
     }else if(!serverConnected){
-        printf("Connect to the server before sending data\n");
+        printMensage("Connect to the server before sending data", 93);
     }
-    //close(socketId);
 }
 
 /*---------------------------------------------------------------------------------*/
 
-vector<string> options;
-vector<string> trains;
-void initOptionMenu(){
-    options.push_back("Connect to the server");
-    options.push_back("Close connect to the server");
-    options.push_back("Play all trains");
-    options.push_back("Off all trains");
-    options.push_back("Play a train");
-    options.push_back("Off a train");
-    options.push_back("Change the speed of a train");
-
-    //cout << options.size() << endl;
-
-    trains.push_back("Train 0");
-    trains.push_back("Train 1");
-    trains.push_back("Train 2");
-    trains.push_back("Train 3");
-    trains.push_back("Train 4");
-    trains.push_back("Train 5");
-}
-
-/*---------------------------------------------------------------------------------*/
 // Play all trains
 void playAllTrains() {
     if(serverConnected){
@@ -148,9 +189,8 @@ void playAllTrains() {
         mensagem.travado = false;
         sendMensage(mensagem);
     }else{
-        cout << "Connect to the server before" << endl;
+        printMensage("Connect to the server before", 93);
     }
-
 }
 
 // Pause all trains
@@ -160,7 +200,7 @@ void pauseAllTrains() {
         mensagem.travado = true;
         sendMensage(mensagem);
     }else{
-        cout << "Connect to the server before" << endl;
+        printMensage("Connect to the server before", 93);
     }
 }
 
@@ -172,7 +212,7 @@ void playTrain(int id) {
         mensagem.speed = -1;
         sendMensage(mensagem);
     }else{
-        cout << "Connect to the server before" << endl;
+        printMensage("Connect to the server before", 93);
     }
 }
 
@@ -185,7 +225,7 @@ void pauseTrain(int id) {
         mensagem.speed = -1;
         sendMensage(mensagem);
     }else{
-        cout << "Connect to the server before" << endl;
+        printMensage("Connect to the server before", 93);
     }
 }
 
@@ -193,10 +233,10 @@ void pauseTrain(int id) {
 void changeSpeedTrain(int id) {
     if(serverConnected){
         mensagem.trainID = id;
-        mensagem.speed = readVelocityOption();
+        mensagem.speed = (40+(readAnalog(1)/10));
         sendMensage(mensagem);
     }else{
-        cout << "Connect to the server before" << endl;
+        printMensage("Connect to the server before", 93);
     }
 }
 
@@ -231,23 +271,11 @@ void menuExecute(int option, int id){
     }
 }
 
+
 void teste(){
     int optionActive = 0;
     while(true){
-        system("clear");
-        for (int i = 0; i <= 6; i++) {
-            //
-            if (i == optionActive) {
-                cout << "> ";
-            } else {
-                cout << "  ";
-            }
-            cout << options[i];
-            if (i == optionActive) {
-                cout << " <";
-            }
-            cout << endl;
-        }
+        menuAnimation(optionActive);
 
         int n;
         cin >> n;
@@ -255,8 +283,7 @@ void teste(){
         if(n == 2){
             int id;
             if(optionActive >= 4 && optionActive <= 6){
-                cout << "Digite o id: ";
-                cin >> id;
+                id = menuGetId();
             }
             menuExecute(optionActive, id);
         } else if(n == 1){
@@ -284,6 +311,9 @@ void buttonsRead(){
     int optionActive = 0;
     cout << options[optionActive] << endl;
     while(true){
+        usleep(500000);
+        menuAnimation(optionActive);
+
         up = botaoUp.getNumericValue();
         play = botaoPlay.getNumericValue();
         down = botaoDown.getNumericValue();
@@ -291,37 +321,39 @@ void buttonsRead(){
         if(play == 1){
             int id;
             if(optionActive >= 4 && optionActive <= 6){
-                cout << "Digite o id: ";
-                cin >> id;
+                id = menuGetId();
             }
             menuExecute(optionActive, id);
         } else if(up == 1){
+            ++optionActive;
+            if(optionActive == options.size()){ optionActive = 0;}
             system("clear");
-            optionActive++;
-            if(optionActive == options.size()) optionActive = 0;
-            cout << options[optionActive] << endl;
         } else if(down == 1){
+            --optionActive;
+            if(optionActive == -1){ optionActive = options.size() -1;}
             system("clear");
-            optionActive--;
-            if(optionActive == -1) optionActive = options.size() -1;
-            cout << options[optionActive] << endl;
         }
 
-        sleep(1);
-        //cout << "Valor do botão é: " << up << " - " <<  play << " - " << down << endl;
+
     }
 
 }
 
 /*---------------------------------------------------------------------------------*/
 
+void funcaoSignalHandler (int sig){
+    colorir(false, 40);
+    exit(EXIT_SUCCESS);
+}
+
 int main(int argc, char *argv[]){
-    //signal(SIGINT, funcaoSignalHandler);
+    signal(SIGINT, funcaoSignalHandler);
+
     initOptionMenu();
     thread t1(buttonsRead);
-    thread test(teste);
+    //thread test(teste);
 
     t1.join();
-    test.join();
+    //test.join();
     return 0;
 }
