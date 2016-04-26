@@ -23,9 +23,7 @@
 
 #define PATH_ADC "/sys/bus/iio/devices/iio:device0/in_voltage"
 
-
 using namespace std;
-
 
 
 struct Mensagem {
@@ -52,8 +50,6 @@ int readAnalog(int number){
 int readVelocityOption(){
     return readAnalog(1);
 }
-
-
 
 bool serverConnected = false;
 
@@ -123,8 +119,6 @@ void sendMensage(Mensagem mensagem){
 
 /*---------------------------------------------------------------------------------*/
 
-
-
 vector<string> options;
 vector<string> trains;
 void initOptionMenu(){
@@ -168,7 +162,6 @@ void pauseAllTrains() {
     }else{
         cout << "Connect to the server before" << endl;
     }
-
 }
 
 // Play a train
@@ -181,7 +174,6 @@ void playTrain(int id) {
     }else{
         cout << "Connect to the server before" << endl;
     }
-
 }
 
 // Pause a train
@@ -195,7 +187,6 @@ void pauseTrain(int id) {
     }else{
         cout << "Connect to the server before" << endl;
     }
-
 }
 
 // Change speed
@@ -207,13 +198,12 @@ void changeSpeedTrain(int id) {
     }else{
         cout << "Connect to the server before" << endl;
     }
-
 }
 
 /*---------------------------------------------------------------------------------*/
 
 void menuExecute(int option, int id){
-
+    // Select the option
     switch (option) {
     case 0:
         connectedServer();
@@ -239,14 +229,26 @@ void menuExecute(int option, int id){
     default:
         break;
     }
-
 }
 
-
 void teste(){
-
     int optionActive = 0;
     while(true){
+        system("clear");
+        for (int i = 0; i <= 6; i++) {
+            //
+            if (i == optionActive) {
+                cout << "> ";
+            } else {
+                cout << "  ";
+            }
+            cout << options[i];
+            if (i == optionActive) {
+                cout << " <";
+            }
+            cout << endl;
+        }
+
         int n;
         cin >> n;
 
@@ -257,17 +259,14 @@ void teste(){
                 cin >> id;
             }
             menuExecute(optionActive, id);
-
         } else if(n == 1){
             ++optionActive;
             if(optionActive == options.size()){ optionActive = 0;}
             system("clear");
-            cout << optionActive << " - "<< options[optionActive] << endl;
         } else if(n == 3){
             --optionActive;
             if(optionActive == -1){ optionActive = options.size() -1;}
             system("clear");
-            cout << optionActive << " - "<< options[optionActive] << endl;
         }
 
         usleep(50000);
@@ -281,13 +280,13 @@ void buttonsRead(){
 
     int up,play,down;
 
+
     int optionActive = 0;
     cout << options[optionActive] << endl;
     while(true){
         up = botaoUp.getNumericValue();
         play = botaoPlay.getNumericValue();
         down = botaoDown.getNumericValue();
-
 
         if(play == 1){
             int id;
@@ -313,8 +312,6 @@ void buttonsRead(){
     }
 
 }
-
-
 
 /*---------------------------------------------------------------------------------*/
 
