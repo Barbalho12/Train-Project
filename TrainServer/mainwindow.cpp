@@ -95,8 +95,6 @@ void MainWindow::server() {
 
         threadServer.detach();
 
-
-
         sleep(1);
         //::close(conexaoClienteId);
     }
@@ -175,20 +173,58 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    trem1 = createTrem(1, 250, 10, true, ui->labelTrem01->geometry(), ui->labelTrilho01->geometry());
+    sem1 = new Semaforo(991,1,IPC_CREAT|0600);
+    sem2 = new Semaforo(992,1,IPC_CREAT|0600);
+    sem3 = new Semaforo(993,1,IPC_CREAT|0600);
+    sem4 = new Semaforo(994,1,IPC_CREAT|0600);
+    sem5 = new Semaforo(995,1,IPC_CREAT|0600);
+    sem6 = new Semaforo(996,1,IPC_CREAT|0600);
+    sem7 = new Semaforo(997,1,IPC_CREAT|0600);
+    sem8 = new Semaforo(998,1,IPC_CREAT|0600);
+
+    trem1 = createTrem(1, 120, 10, true, ui->labelTrem01->geometry(), ui->labelTrilho01->geometry());
     trem2 = createTrem(2, 140, 10, false, ui->labelTrem02->geometry(), ui->labelTrilho02->geometry());
-    trem3 = createTrem(3, 180, 10, true, ui->labelTrem03->geometry(), ui->labelTrilho03->geometry());
-    trem4 = createTrem(4, 300, 10, false, ui->labelTrem04->geometry(), ui->labelTrilho04->geometry());
-    trem5 = createTrem(5, 80,  10, true, ui->labelTrem05->geometry(), ui->labelTrilho05->geometry());
-    trem6 = createTrem(6, 250, 10, true, ui->labelTrem06->geometry(), ui->labelTrilho06->geometry());
+    trem3 = createTrem(3, 90, 10, true, ui->labelTrem03->geometry(), ui->labelTrilho03->geometry());
+    trem4 = createTrem(4, 135, 10, false, ui->labelTrem04->geometry(), ui->labelTrilho04->geometry());
+    trem5 = createTrem(5, 50,  10, true, ui->labelTrem05->geometry(), ui->labelTrilho05->geometry());
+    trem6 = createTrem(6, 80, 10, true, ui->labelTrem06->geometry(), ui->labelTrilho06->geometry());
 
-    trem1->setEnable(false);
-    trem2->setEnable(false);
-    trem3->setEnable(false);
-    trem4->setEnable(false);
-    trem5->setEnable(false);
-    trem6->setEnable(false);
+    RegiaoCritica *regiao12 =  new RegiaoCritica(160, 20, 160, 120, sem1); //1 e 2     ==
+    RegiaoCritica *regiao14 =  new RegiaoCritica(160, 120, 90, 120, sem3); //1 e 4
 
+    RegiaoCritica *regiao21 =  regiao12;
+    RegiaoCritica *regiao24 =  new RegiaoCritica(160, 120, 300, 120, sem4); //2 e 4
+    RegiaoCritica *regiao23 =  new RegiaoCritica(300, 120, 300, 20, sem2); //2 e 3
+
+    RegiaoCritica *regiao34 =  new RegiaoCritica(370, 120, 300, 120, sem5); //3 e 4    ==
+    RegiaoCritica *regiao32 =  regiao23;
+
+    RegiaoCritica *regiao45 =  new RegiaoCritica(90, 220, 230, 220, sem6); //4 e 5
+    RegiaoCritica *regiao46 =  new RegiaoCritica(230, 220, 370, 220, sem7); //4 e 6
+    RegiaoCritica *regiao43 =  regiao34;
+    RegiaoCritica *regiao42 =  new RegiaoCritica(300, 120, 160, 120, sem4); //4 e 2
+    RegiaoCritica *regiao41 =  regiao14;
+
+    RegiaoCritica *regiao54 =  regiao45;
+    RegiaoCritica *regiao56 =  new RegiaoCritica(230, 220, 230, 320, sem8); //5 e 6
+
+    RegiaoCritica *regiao64 =  regiao46;
+    RegiaoCritica *regiao65 =  new RegiaoCritica(230, 320, 230, 220, sem8); //6 e 5
+
+    trem1->addRegiaoCritica(regiao12,regiao14);
+    trem2->addRegiaoCritica(regiao21,regiao24,regiao23);
+    trem3->addRegiaoCritica(regiao34,regiao32);
+    trem4->addRegiaoCritica(regiao45,regiao46,regiao43);
+    trem4->addRegiaoCritica(regiao42,regiao41);
+    trem5->addRegiaoCritica(regiao54,regiao56);
+    trem6->addRegiaoCritica(regiao64,regiao65);
+
+//    trem1->setEnable(false);
+//    trem2->setEnable(false);
+//    trem3->setEnable(false);
+//    trem4->setEnable(false);
+//    trem5->setEnable(false);
+//    trem6->setEnable(false);
 
     connect(trem1, SIGNAL(updateGUI(int, int, int)), SLOT(updateInterface(int, int, int)));
     trem1->start();

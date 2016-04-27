@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "trem.h"
+#include "semaforo.h"
 
 #define PORTNUM 4325
 #define IP_SERV "192.168.7.1"
@@ -41,6 +42,14 @@ private:
     Trem *trem4;
     Trem *trem5;
     Trem *trem6;
+    Semaforo *sem1;
+    Semaforo *sem2;
+    Semaforo *sem3;
+    Semaforo *sem4;
+    Semaforo *sem5;
+    Semaforo *sem6;
+    Semaforo *sem7;
+    Semaforo *sem8;
     std::thread threadServer;
     std::thread threadStartServer;
     Mensagem mensagem;

@@ -15,9 +15,11 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    trem.cpp
+    trem.cpp \
+    semaforo.cpp
 
 HEADERS  += mainwindow.h \
-    trem.h
+    trem.h \
+    semaforo.h
 
 FORMS    += mainwindow.ui

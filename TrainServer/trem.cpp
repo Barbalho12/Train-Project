@@ -1,6 +1,21 @@
 #include <iostream>
 #include "trem.h"
 
+//Trem::Trem(int id, int x, int y, int velocidade ,int step, bool clockwise, int top,int left,int right,int bottom, vector<Semaforo*> semaforos){
+//    this->id = id;
+//    this->x = x;
+//    this->y = y;
+//    this->step = step;
+//    this->top = top;
+//    this->left = left;
+//    this->right = right;
+//    this->bottom = bottom;
+//    this->velocidade = velocidade;
+//    this->clockwise = clockwise;
+//    this->semaforos = semaforos;
+//    enable = true;
+//}
+
 Trem::Trem(int id, int x, int y, int velocidade ,int step, bool clockwise, int top,int left,int right,int bottom){
     this->id = id;
     this->x = x;
@@ -29,16 +44,38 @@ void Trem::setEnable(bool enable)
     this->enable = enable;
 }
 
+//void Trem::addSemaforo(Semaforo *semaforo1, Semaforo *semaforo2){
+//    semaforos.push_back(semaforo1);
+//    semaforos.push_back(semaforo2);
+//}
+
+//void Trem::addSemaforo(Semaforo *semaforo1, Semaforo *semaforo2, Semaforo *semaforo3){
+//    semaforos.push_back(semaforo1);
+//    semaforos.push_back(semaforo2);
+//    semaforos.push_back(semaforo3);
+//}
+void Trem::addRegiaoCritica(RegiaoCritica *regiao1, RegiaoCritica *regiao2){
+    regioesCriticas.push_back(regiao1);
+    regioesCriticas.push_back(regiao2);
+}
+void Trem::addRegiaoCritica(RegiaoCritica *regiao1, RegiaoCritica *regiao2, RegiaoCritica *regiao3){
+    regioesCriticas.push_back(regiao1);
+    regioesCriticas.push_back(regiao2);
+    regioesCriticas.push_back(regiao3);
+}
+
 void Trem::start()
 {
     threadTrem = std::thread(&Trem::run,this);
 }
+
 
 void Trem::run(){
     while(true){
 
         if (enable){
             emit updateGUI(id,x,y);
+
             if (clockwise){
                 if (y+10 == top && x+10 < right){
                     x+=step;
@@ -64,6 +101,11 @@ void Trem::run(){
                     std::cout << x <<" Error " << y << " - " << top << "," << left << ","<< right << ","<< bottom << ","<< std::endl;
                 }
             }
+            for(RegiaoCritica *reg : regioesCriticas){
+                if((x==reg->xi+10 && y==reg->yi+10) || (x==reg->xi-10 && y==reg->yi-10)){ reg->semaforo->P();}
+                if((x==reg->xf+10 && y==reg->yf+10) || (x==reg->xf-10 && y==reg->yf-10)){ reg->semaforo->V();}
+            }
+
         }
         this_thread::sleep_for(chrono::milliseconds(velocidade));
     }

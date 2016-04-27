@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = TrainServer1.0.0
-DISTDIR = /home/barbalho/BeagleBoneBlack/dev/Projects/Train-Project/TrainServer/.tmp/TrainServer1.0.0
+DISTDIR = /home/barbalho/BeagleBoneBlack/dev/Projects/2-unidade/Train-Project/TrainServer/.tmp/TrainServer1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/opt/Qt5.5.1/5.5/gcc_64 -Wl,-rpath,/opt/Qt5.5.1/5.5/gcc_64/lib
 LIBS          = $(SUBLIBS) -L/opt/Qt5.5.1/5.5/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
@@ -50,11 +50,13 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
-		trem.cpp moc_mainwindow.cpp \
+		trem.cpp \
+		semaforo.cpp moc_mainwindow.cpp \
 		moc_trem.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		trem.o \
+		semaforo.o \
 		moc_mainwindow.o \
 		moc_trem.o
 DIST          = /opt/Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
@@ -193,9 +195,11 @@ DIST          = /opt/Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.5.1/5.5/gcc_64/mkspecs/features/yacc.prf \
 		/opt/Qt5.5.1/5.5/gcc_64/mkspecs/features/lex.prf \
 		TrainServer.pro mainwindow.h \
-		trem.h main.cpp \
+		trem.h \
+		semaforo.h main.cpp \
 		mainwindow.cpp \
-		trem.cpp
+		trem.cpp \
+		semaforo.cpp
 QMAKE_TARGET  = TrainServer
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = TrainServer
@@ -519,8 +523,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h trem.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp trem.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h trem.h semaforo.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp trem.cpp semaforo.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -654,8 +658,9 @@ moc_mainwindow.cpp: /opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qicon.h \
 		trem.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
+		semaforo.h \
 		mainwindow.h
-	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/Train-Project/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore mainwindow.h -o moc_mainwindow.cpp
+	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/2-unidade/Train-Project/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore mainwindow.h -o moc_mainwindow.cpp
 
 moc_trem.cpp: /opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qobject.h \
@@ -710,8 +715,9 @@ moc_trem.cpp: /opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qisenum.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		semaforo.h \
 		trem.h
-	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/Train-Project/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore trem.h -o moc_trem.cpp
+	/opt/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/barbalho/BeagleBoneBlack/dev/Projects/2-unidade/Train-Project/TrainServer -I/opt/Qt5.5.1/5.5/gcc_64/include -I/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/opt/Qt5.5.1/5.5/gcc_64/include/QtGui -I/opt/Qt5.5.1/5.5/gcc_64/include/QtCore trem.h -o moc_trem.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -839,6 +845,7 @@ main.o: main.cpp mainwindow.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qicon.h \
 		trem.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
+		semaforo.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QApplication \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/qapplication.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qcoreapplication.h \
@@ -957,6 +964,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtGui/qicon.h \
 		trem.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QObject \
+		semaforo.h \
 		ui_mainwindow.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/QVariant \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtWidgets/QAction \
@@ -1053,8 +1061,12 @@ trem.o: trem.cpp trem.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
 		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qisenum.h \
-		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h
+		/opt/Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		semaforo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o trem.o trem.cpp
+
+semaforo.o: semaforo.cpp semaforo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o semaforo.o semaforo.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
