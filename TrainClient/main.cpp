@@ -70,8 +70,22 @@ void colorir(bool condition, int mode){
     }
 }
 
-void menuAnimation(int &optionActive){
+string barra(){
+    string leitura = "";
+    int n = 10 - (((int)readAnalog(1))/400);
+    for(int i = 0; i < n; i++){
+        leitura = leitura + "*";
+    }
+    return leitura;
+}
+
+
+
+void menuAnimation(int &optionActive, int &idActive ,bool idOptionActive){
     system("clear");
+
+    cout << "[Potenciômetro] = "<< barra() << endl;
+
     colorir(true, 92);
     cout << "=================Menu================[ "<< (40+(readAnalog(1)/10)) << " ]" << endl;
     colorir(false, 92);
@@ -95,23 +109,51 @@ void menuAnimation(int &optionActive){
     colorir(true, 92);
     cout << "======================================" << endl;
     colorir(false, 92);
+    if(idOptionActive){
+
+        colorir(true, 92);
+        cout << "===============OPTION=================" << endl;
+        colorir(false, 92);
+
+        for (int i = 1; i <= 6; i++) {
+            //
+            if (i == idActive) {
+                colorir(true, 40);
+                cout << "> ";
+            } else {
+                cout << "  ";
+            }
+
+            cout << "Train " << i;
+            if (i == idActive) {
+
+                cout << " <";
+                colorir(false, 40);
+            }
+            cout << endl;
+        }
+
+        colorir(true, 92);
+        cout << "======================================" << endl;
+        colorir(false, 92);
+    }
 }
 
-int menuGetId(){
-    int id;
-    colorir(true, 92);
-    cout << "===============OPTION=================" << endl;
-    colorir(false, 92);
+//int menuGetId(){
+//    int id;
+//    colorir(true, 92);
+//    cout << "===============OPTION=================" << endl;
+//    colorir(false, 92);
 
-    cout << "Digite o id: ";
-    cin >> id;
+//    cout << "Digite o id: ";
+//    cin >> id;
 
-    colorir(true, 92);
-    cout << "======================================" << endl;
-    colorir(false, 92);
+//    colorir(true, 92);
+//    cout << "======================================" << endl;
+//    colorir(false, 92);
 
-    return id;
-}
+//    return id;
+//}
 
 void printMensage(string message, int cor){
     colorir(true, cor);
@@ -233,7 +275,7 @@ void pauseTrain(int id) {
 void changeSpeedTrain(int id) {
     if(serverConnected){
         mensagem.trainID = id;
-        mensagem.speed = (40+(readAnalog(1)/10));
+        mensagem.speed = (20+(readAnalog(1)/10));
         sendMensage(mensagem);
     }else{
         printMensage("Connect to the server before", 93);
@@ -271,35 +313,6 @@ void menuExecute(int option, int id){
     }
 }
 
-
-void teste(){
-    int optionActive = 0;
-    while(true){
-        menuAnimation(optionActive);
-
-        int n;
-        cin >> n;
-
-        if(n == 2){
-            int id;
-            if(optionActive >= 4 && optionActive <= 6){
-                id = menuGetId();
-            }
-            menuExecute(optionActive, id);
-        } else if(n == 1){
-            ++optionActive;
-            if(optionActive == options.size()){ optionActive = 0;}
-            system("clear");
-        } else if(n == 3){
-            --optionActive;
-            if(optionActive == -1){ optionActive = options.size() -1;}
-            system("clear");
-        }
-
-        usleep(50000);
-    }
-}
-
 void buttonsRead(){
     BlackLib::BlackGPIO   botaoUp(BlackLib::GPIO_115,BlackLib::input, BlackLib::SecureMode);
     BlackLib::BlackGPIO   botaoPlay(BlackLib::GPIO_113,BlackLib::input, BlackLib::SecureMode);
@@ -309,30 +322,44 @@ void buttonsRead(){
 
 
     int optionActive = 0;
-    cout << options[optionActive] << endl;
+    int idActive = 1;
+    bool idOptionActive = false;
     while(true){
         usleep(90000);
-        menuAnimation(optionActive);
+        menuAnimation(optionActive, idActive , idOptionActive);
 
         up = botaoUp.getNumericValue();
         play = botaoPlay.getNumericValue();
         down = botaoDown.getNumericValue();
 
         if(play == 1){
-            int id;
-            if(optionActive >= 4 && optionActive <= 6){
-                id = menuGetId();
+            usleep(1000);
+            if(idOptionActive){
+                idOptionActive = false;
+            }else if(serverConnected && optionActive >= 4 && optionActive <= 6){
+                idOptionActive = true;
             }
-            menuExecute(optionActive, id);
+            menuExecute(optionActive, idActive);
         } else if(up == 1){
             usleep(1000);
-            ++optionActive;
-            if(optionActive == options.size()){ optionActive = 0;}
+            if(idOptionActive){
+                ++idActive;
+                if(idActive == 7){ idActive = 1;}
+            }else{
+                ++optionActive;
+                if(optionActive == options.size()){ optionActive = 0;}
+            }
+
             system("clear");
         } else if(down == 1){
             usleep(1000);
-            --optionActive;
-            if(optionActive == -1){ optionActive = options.size() -1;}
+            if(idOptionActive){
+                --idActive;
+                if(idActive == -1){ idActive = 6;}
+            }else{
+                --optionActive;
+                if(optionActive == -1){ optionActive = options.size() -1;}
+            }
             system("clear");
         }
 
@@ -353,9 +380,7 @@ int main(int argc, char *argv[]){
 
     initOptionMenu();
     thread t1(buttonsRead);
-    //thread test(teste);
 
     t1.join();
-    //test.join();
     return 0;
 }

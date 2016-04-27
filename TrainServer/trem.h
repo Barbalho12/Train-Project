@@ -26,7 +26,6 @@ struct RegiaoCritica {
 class Trem : public QObject{
     Q_OBJECT
 public:
-    //Trem(int id, int x,int y, int velocidade, int step, bool clockwise, int top,int left,int right,int bottom, vector<Semaforo*> semaforos);
     Trem(int id, int x,int y, int velocidade, int step, bool clockwise, int top,int left,int right,int bottom);
 
     ~Trem();
@@ -36,8 +35,6 @@ public:
     void setEnable(bool);
     void addRegiaoCritica(RegiaoCritica *regiao1, RegiaoCritica *regiao2);
     void addRegiaoCritica(RegiaoCritica *regiao1, RegiaoCritica *regiao2, RegiaoCritica *regiao3);
-//    void addSemaforo(Semaforo *semaforo1, Semaforo *semaforo2);
-//    void addSemaforo(Semaforo *semaforo1, Semaforo *semaforo2, Semaforo *semaforo3);
 
 signals:
     void updateGUI(int,int,int);

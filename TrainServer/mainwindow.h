@@ -36,12 +36,14 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
     Trem *trem1;
     Trem *trem2;
     Trem *trem3;
     Trem *trem4;
     Trem *trem5;
     Trem *trem6;
+
     Semaforo *sem1;
     Semaforo *sem2;
     Semaforo *sem3;
@@ -50,6 +52,7 @@ private:
     Semaforo *sem6;
     Semaforo *sem7;
     Semaforo *sem8;
+
     std::thread threadServer;
     std::thread threadStartServer;
     Mensagem mensagem;
