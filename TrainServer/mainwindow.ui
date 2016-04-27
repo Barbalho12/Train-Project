@@ -125,6 +125,12 @@ border: 3px dashed black</string>
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color:  blue;
 color:white;</string>
@@ -141,6 +147,12 @@ color:white;</string>
       <width>20</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:  brown;
@@ -159,6 +171,12 @@ color:white;</string>
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color:  purple;
 color:white;</string>
@@ -175,6 +193,12 @@ color:white;</string>
       <width>20</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:  darkblue;
@@ -193,8 +217,14 @@ color:white;</string>
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  green;
+     <string notr="true">background-color:  black;
 color:white;</string>
     </property>
     <property name="text">
@@ -209,6 +239,12 @@ color:white;</string>
       <width>20</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:  darkgreen;
