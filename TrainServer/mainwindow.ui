@@ -126,10 +126,11 @@ border: 3px dashed black</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  blue</string>
+     <string notr="true">background-color:  blue;
+color:white;</string>
     </property>
     <property name="text">
-     <string/>
+     <string>01</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelTrem02">
@@ -142,10 +143,11 @@ border: 3px dashed black</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  brown</string>
+     <string notr="true">background-color:  brown;
+color:white;</string>
     </property>
     <property name="text">
-     <string/>
+     <string>02</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelTrem03">
@@ -158,10 +160,11 @@ border: 3px dashed black</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  purple</string>
+     <string notr="true">background-color:  purple;
+color:white;</string>
     </property>
     <property name="text">
-     <string/>
+     <string>03</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelTrem04">
@@ -174,10 +177,11 @@ border: 3px dashed black</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  darkblue</string>
+     <string notr="true">background-color:  darkblue;
+color:white;</string>
     </property>
     <property name="text">
-     <string/>
+     <string>04</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelTrem06">
@@ -190,10 +194,11 @@ border: 3px dashed black</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  green</string>
+     <string notr="true">background-color:  green;
+color:white;</string>
     </property>
     <property name="text">
-     <string/>
+     <string>06</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelTrem05">
@@ -206,10 +211,11 @@ border: 3px dashed black</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:  darkgreen</string>
+     <string notr="true">background-color:  darkgreen;
+color:white;</string>
     </property>
     <property name="text">
-     <string/>
+     <string>05</string>
     </property>
    </widget>
   </widget>

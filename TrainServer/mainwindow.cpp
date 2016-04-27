@@ -115,22 +115,6 @@ Trem *MainWindow::createTrem(int id, int velocidade, int step, bool clockwise, Q
 }
 
 void MainWindow::updateTrains(){
-    //std::cout << "Update " << mensagem.speed <<" - "<< mensagem.trainID << std::endl;
-//    if(mensagem.trainID == -1 && !mensagem.travado){
-//        trem1->setEnable(true);
-//        trem2->setEnable(true);
-//        trem3->setEnable(true);
-//        trem4->setEnable(true);
-//        trem5->setEnable(true);
-//        trem6->setEnable(true);
-//    }else if (mensagem.trainID == -2 && mensagem.travado){
-//        trem1->setEnable(false);
-//        trem2->setEnable(false);
-//        trem3->setEnable(false);
-//        trem4->setEnable(false);
-//        trem5->setEnable(false);
-//        trem6->setEnable(false);
-//    }else{
     switch (mensagem.trainID) {
         case -1:
             if(mensagem.travado){
@@ -183,7 +167,6 @@ void MainWindow::updateTrains(){
 
         break;
     }
-   // }
 }
 
 MainWindow::MainWindow(QWidget *parent) :
