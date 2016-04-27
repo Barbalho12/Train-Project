@@ -335,11 +335,15 @@ void buttonsRead(){
         if(play == 1){
             usleep(1000);
             if(idOptionActive){
+                menuExecute(optionActive, idActive);
                 idOptionActive = false;
             }else if(serverConnected && optionActive >= 4 && optionActive <= 6){
                 idOptionActive = true;
+            }else{
+
+                menuExecute(optionActive, idActive);
             }
-            menuExecute(optionActive, idActive);
+
         } else if(up == 1){
             usleep(1000);
             if(idOptionActive){
