@@ -311,7 +311,7 @@ void buttonsRead(){
     int optionActive = 0;
     cout << options[optionActive] << endl;
     while(true){
-        usleep(500000);
+        usleep(90000);
         menuAnimation(optionActive);
 
         up = botaoUp.getNumericValue();
@@ -325,10 +325,12 @@ void buttonsRead(){
             }
             menuExecute(optionActive, id);
         } else if(up == 1){
+            usleep(1000);
             ++optionActive;
             if(optionActive == options.size()){ optionActive = 0;}
             system("clear");
         } else if(down == 1){
+            usleep(1000);
             --optionActive;
             if(optionActive == -1){ optionActive = options.size() -1;}
             system("clear");
