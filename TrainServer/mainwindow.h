@@ -1,13 +1,24 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+//#include <cstdio>
+//#include <cstring>
+//#include <cstdlib>
+//#include <netinet/in.h>
+//#include <thread>
+//#include <sys/socket.h>
 #include <QMainWindow>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <iostream>
+#include <vector>
 #include "trem.h"
 #include "semaforo.h"
 
 #define PORTNUM 4325
 #define IP_SERV "192.168.7.1"
-//#define IP_SERV "127.0.0.1"
+#define MAXMSG 1024
+#define MAXNAME 100
 
 struct Mensagem {
     public:
@@ -57,6 +68,7 @@ private:
     std::thread threadStartServer;
     Mensagem mensagem;
     void updateTrains();
+    void enableTrains(bool value);
     int socketId;
 };
 

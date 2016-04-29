@@ -76,11 +76,9 @@ void Trem::run(){
             for(RegiaoCritica *reg : regioesCriticas){
                 if((x==reg->xi+10 && y==reg->yi+10) || (x==reg->xi-10 && y==reg->yi-10)){
                     reg->semaforo->P();
-//                    if(id==6) std::cout  << "P" << std::endl;
                 }
                 if((x==reg->xf+10 && y==reg->yf+10) || (x==reg->xf-10 && y==reg->yf-10)){
                     reg->semaforo->V();
-//                    if(id==6) std::cout  << "V - "  << x << " - " << y << " - "<< reg->semaforo->getSemaforoId() << std::endl;
                 }
             }
 
