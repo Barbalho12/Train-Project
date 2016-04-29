@@ -324,8 +324,9 @@ void buttonsRead(){
     int optionActive = 0;
     int idActive = 1;
     bool idOptionActive = false;
+
     while(true){
-        usleep(90000);
+        usleep(100000);
         menuAnimation(optionActive, idActive , idOptionActive);
 
         up = botaoUp.getNumericValue();

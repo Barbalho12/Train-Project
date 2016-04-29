@@ -243,12 +243,12 @@ MainWindow::MainWindow(QWidget *parent) :
     trem5->addRegiaoCritica(regiao54,regiao56);
     trem6->addRegiaoCritica(regiao64,regiao65);
 
-//    trem1->setEnable(false);
-//    trem2->setEnable(false);
-//    trem3->setEnable(false);
-//    trem4->setEnable(false);
-//    trem5->setEnable(false);
-//    trem6->setEnable(false);
+    trem1->setEnable(false);
+    trem2->setEnable(false);
+    trem3->setEnable(false);
+    trem4->setEnable(false);
+    trem5->setEnable(false);
+    trem6->setEnable(false);
 
     connect(trem1, SIGNAL(updateGUI(int, int, int)), SLOT(updateInterface(int, int, int)));
     trem1->start();
