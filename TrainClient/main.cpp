@@ -79,12 +79,18 @@ string barra(){
     return leitura;
 }
 
+std::string alerta = "";
 
+void printMensage(string message, int cor){
+    colorir(true, cor);
+    std::cout << "[INFO] " << message << std::endl;
+    colorir(false, cor);
+}
 
 void menuAnimation(int &optionActive, int &idActive ,bool idOptionActive){
     system("clear");
 
-    cout << "[Potenciômetro] = "<< barra() << endl;
+    //cout << "[Potenciômetro] = "<< barra() << endl;
 
     colorir(true, 92);
     cout << "=================Menu================[ "<< (40+(readAnalog(1)/10)) << " ]" << endl;
@@ -109,6 +115,11 @@ void menuAnimation(int &optionActive, int &idActive ,bool idOptionActive){
     colorir(true, 92);
     cout << "======================================" << endl;
     colorir(false, 92);
+
+
+    if(alerta != "")
+    printMensage(alerta, 93);
+
     if(idOptionActive){
 
         colorir(true, 92);
@@ -137,29 +148,14 @@ void menuAnimation(int &optionActive, int &idActive ,bool idOptionActive){
         cout << "======================================" << endl;
         colorir(false, 92);
     }
+
+    if(idOptionActive && optionActive == 6){
+        cout << "Selecione a Velocidade = "<< barra() << endl;
+    }
 }
 
-//int menuGetId(){
-//    int id;
-//    colorir(true, 92);
-//    cout << "===============OPTION=================" << endl;
-//    colorir(false, 92);
 
-//    cout << "Digite o id: ";
-//    cin >> id;
 
-//    colorir(true, 92);
-//    cout << "======================================" << endl;
-//    colorir(false, 92);
-
-//    return id;
-//}
-
-void printMensage(string message, int cor){
-    colorir(true, cor);
-    cout << message << endl;
-    colorir(false, cor);
-}
 
 
 
@@ -168,9 +164,11 @@ void printMensage(string message, int cor){
 void disconnectedServer(){
     if(serverConnected){
         serverConnected = false;
-        printMensage("Server Disconnected", 94);
+        //printMensage("Server Disconnected", 94);
+        alerta = "Server Disconnected";
     }else{
-        printMensage("Server is not connected", 93);
+        //printMensage("Server is not connected", 93);
+        alerta = "Server is not connected";
     }
 }
 
@@ -199,11 +197,14 @@ void connectedServer(){
     int socketId;
     if(connectSocket(&socketId) && !serverConnected){
         serverConnected = true;
-        printMensage("Server Connected", 94);
+        //printMensage("Server Connected", 94);
+        alerta = "Server Connected";
     }else if(connectSocket(&socketId) && serverConnected){
-        printMensage("server is already connected", 93);
+       // printMensage("server is already connected", 93);
+        alerta = "server is already connected";
     }else{
-        printMensage("It was not possible to connect to the server", 93);
+        //printMensage("It was not possible to connect to the server", 93);
+        alerta = "It was not possible to connect to the server";
     }
 
 }
@@ -218,7 +219,8 @@ void sendMensage(Mensagem mensagem){
             return;
         }
     }else if(!serverConnected){
-        printMensage("Connect to the server before sending data", 93);
+        //printMensage("Connect to the server before sending data", 93);
+        alerta = "Connect to the server before sending data";
     }
 }
 
@@ -231,7 +233,8 @@ void playAllTrains() {
         mensagem.travado = false;
         sendMensage(mensagem);
     }else{
-        printMensage("Connect to the server before", 93);
+        //printMensage("Connect to the server before", 93);
+        alerta = "Connect to the server before";
     }
 }
 
@@ -242,7 +245,8 @@ void pauseAllTrains() {
         mensagem.travado = true;
         sendMensage(mensagem);
     }else{
-        printMensage("Connect to the server before", 93);
+        //printMensage("Connect to the server before", 93);
+        alerta = "Connect to the server before";
     }
 }
 
@@ -254,7 +258,8 @@ void playTrain(int id) {
         mensagem.speed = -1;
         sendMensage(mensagem);
     }else{
-        printMensage("Connect to the server before", 93);
+        //printMensage("Connect to the server before", 93);
+        alerta = "Connect to the server before";
     }
 }
 
@@ -267,7 +272,8 @@ void pauseTrain(int id) {
         mensagem.speed = -1;
         sendMensage(mensagem);
     }else{
-        printMensage("Connect to the server before", 93);
+        //printMensage("Connect to the server before", 93);
+        alerta = "Connect to the server before";
     }
 }
 
@@ -278,7 +284,8 @@ void changeSpeedTrain(int id) {
         mensagem.speed = (20+(readAnalog(1)/10));
         sendMensage(mensagem);
     }else{
-        printMensage("Connect to the server before", 93);
+        //printMensage("Connect to the server before", 93);
+        alerta = "Connect to the server before";
     }
 }
 
@@ -335,6 +342,7 @@ void buttonsRead(){
 
         if(play == 1){
             usleep(1000);
+            alerta = "";
             if(idOptionActive){
                 menuExecute(optionActive, idActive);
                 idOptionActive = false;
@@ -347,6 +355,7 @@ void buttonsRead(){
 
         } else if(up == 1){
             usleep(1000);
+            alerta = "";
             if(idOptionActive){
                 ++idActive;
                 if(idActive == 7){ idActive = 1;}
@@ -358,10 +367,12 @@ void buttonsRead(){
             system("clear");
         } else if(down == 1){
             usleep(1000);
+            alerta = "";
             if(idOptionActive){
                 --idActive;
                 if(idActive == 0){ idActive = 6;}
             }else{
+
                 --optionActive;
                 if(optionActive == -1){ optionActive = options.size() -1;}
             }
