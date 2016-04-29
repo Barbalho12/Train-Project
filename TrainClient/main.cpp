@@ -360,7 +360,7 @@ void buttonsRead(){
             usleep(1000);
             if(idOptionActive){
                 --idActive;
-                if(idActive == -1){ idActive = 6;}
+                if(idActive == 0){ idActive = 6;}
             }else{
                 --optionActive;
                 if(optionActive == -1){ optionActive = options.size() -1;}
