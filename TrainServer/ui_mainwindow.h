@@ -39,6 +39,15 @@ public:
     QLabel *labelTrem04;
     QLabel *labelTrem06;
     QLabel *labelTrem05;
+    QLabel *lsem1;
+    QLabel *lpanelsem;
+    QLabel *lsem2;
+    QLabel *lsem3;
+    QLabel *lsem4;
+    QLabel *lsem5;
+    QLabel *lsem6;
+    QLabel *lsem7;
+    QLabel *lsem8;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -47,7 +56,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(457, 390);
+        MainWindow->resize(540, 390);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         labelTrilho01 = new QLabel(centralWidget);
@@ -119,10 +128,76 @@ public:
         labelTrem05->setFont(font);
         labelTrem05->setStyleSheet(QLatin1String("background-color:  darkgreen;\n"
 "color:white;"));
+        lsem1 = new QLabel(centralWidget);
+        lsem1->setObjectName(QStringLiteral("lsem1"));
+        lsem1->setGeometry(QRect(490, 80, 16, 16));
+        lsem1->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lpanelsem = new QLabel(centralWidget);
+        lpanelsem->setObjectName(QStringLiteral("lpanelsem"));
+        lpanelsem->setGeometry(QRect(477, 70, 41, 181));
+        lpanelsem->setStyleSheet(QLatin1String("background-color: black;\n"
+"border-radius: 2px;"));
+        lsem2 = new QLabel(centralWidget);
+        lsem2->setObjectName(QStringLiteral("lsem2"));
+        lsem2->setGeometry(QRect(490, 100, 16, 16));
+        lsem2->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lsem3 = new QLabel(centralWidget);
+        lsem3->setObjectName(QStringLiteral("lsem3"));
+        lsem3->setGeometry(QRect(490, 120, 16, 16));
+        lsem3->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lsem4 = new QLabel(centralWidget);
+        lsem4->setObjectName(QStringLiteral("lsem4"));
+        lsem4->setGeometry(QRect(490, 140, 16, 16));
+        lsem4->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lsem5 = new QLabel(centralWidget);
+        lsem5->setObjectName(QStringLiteral("lsem5"));
+        lsem5->setGeometry(QRect(490, 160, 16, 16));
+        lsem5->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lsem6 = new QLabel(centralWidget);
+        lsem6->setObjectName(QStringLiteral("lsem6"));
+        lsem6->setGeometry(QRect(490, 180, 16, 16));
+        lsem6->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lsem7 = new QLabel(centralWidget);
+        lsem7->setObjectName(QStringLiteral("lsem7"));
+        lsem7->setGeometry(QRect(490, 200, 16, 16));
+        lsem7->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
+        lsem8 = new QLabel(centralWidget);
+        lsem8->setObjectName(QStringLiteral("lsem8"));
+        lsem8->setGeometry(QRect(490, 220, 16, 16));
+        lsem8->setStyleSheet(QLatin1String("background-color: red;\n"
+"border-radius:8px;"));
         MainWindow->setCentralWidget(centralWidget);
+        lpanelsem->raise();
+        labelTrilho01->raise();
+        labelTrilho03->raise();
+        labelTrilho02->raise();
+        labelTrilho04->raise();
+        labelTrilho06->raise();
+        labelTrilho05->raise();
+        labelTrem01->raise();
+        labelTrem02->raise();
+        labelTrem03->raise();
+        labelTrem04->raise();
+        labelTrem06->raise();
+        labelTrem05->raise();
+        lsem1->raise();
+        lsem2->raise();
+        lsem3->raise();
+        lsem4->raise();
+        lsem5->raise();
+        lsem6->raise();
+        lsem7->raise();
+        lsem8->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 457, 25));
+        menuBar->setGeometry(QRect(0, 0, 540, 25));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -151,6 +226,15 @@ public:
         labelTrem04->setText(QApplication::translate("MainWindow", "04", 0));
         labelTrem06->setText(QApplication::translate("MainWindow", "06", 0));
         labelTrem05->setText(QApplication::translate("MainWindow", "05", 0));
+        lsem1->setText(QString());
+        lpanelsem->setText(QString());
+        lsem2->setText(QString());
+        lsem3->setText(QString());
+        lsem4->setText(QString());
+        lsem5->setText(QString());
+        lsem6->setText(QString());
+        lsem7->setText(QString());
+        lsem8->setText(QString());
     } // retranslateUi
 
 };

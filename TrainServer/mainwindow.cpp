@@ -241,4 +241,24 @@ void MainWindow::updateInterface(int id, int x, int y) {
         default:
             break;
     }
+
+    if(sem1->getContador()) ui->lsem1->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem1->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem2->getContador()) ui->lsem2->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem2->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem3->getContador()) ui->lsem3->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem3->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem4->getContador()) ui->lsem4->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem4->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem5->getContador()) ui->lsem5->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem5->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem6->getContador()) ui->lsem6->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem6->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem7->getContador()) ui->lsem7->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem7->setStyleSheet("background-color:red;border-radius:8px;");
+    if(sem8->getContador()) ui->lsem8->setStyleSheet("background-color:green;border-radius:8px;");
+    else ui->lsem8->setStyleSheet("background-color:red;border-radius:8px;");
+
+
+
 }
