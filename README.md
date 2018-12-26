@@ -1,2 +1,3 @@
 # Train-Project
-TrainServer, e TrainClient
+
+Implementation of the concurrency problem with multiple trains using BeagleBone Black
